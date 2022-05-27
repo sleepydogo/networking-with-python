@@ -1,5 +1,3 @@
-# To have a proper read of the file you may have to wrap the lines 
-
 # we've imported all the libraries we need
 import argparse 
 import socket 
@@ -89,34 +87,44 @@ class Network_Sparrow:
 
     # this function executes the task corresponding to the argument it receives, it creates a shell, it executes a command or it upload a file .
     def handle(self, client_socket):
-        # if the argument is execute 
-        if self.args.execute:
+        # if the argument is execute we pass the argument to the execute function 
+        if self.args.execute:   
+            # we send the execute arguments to the function
             output = execute(self.args.execute)
+            # sends the output back on the socket
             client_socket.send(output.encode())
         elif self.args.upload:
             # the b before the string indicates that the content its in bytes
             file_buffer = b''
+            # while there is incoming data we keep the loop and pack the data in file_buffer
             while True:
                 data = client_socket.recv(4096)
                 if data: 
                     file_buffer += data
                 else:
                     break
+            # then we write the accumulated content to an specified file
             with open(self.args.upload, 'wb') as f:
                 f.write(file_buffer)
+            # we notify everything's ok
             message = f'Saved file {self.args.upload}'
             client_socket.send(message.encode())
         elif self.args.command:
             cmd_buffer = b''
             while True:
                 try:
+                    # we send a prompt to the sender and wait for a command string to come back
                     client_socket.send(b'BHP: #> ')
+                    # we recieve the hole command and we packed it in cmd_buffer
                     while '\n' not in cmd_buffer.decode():
                         cmd_buffer += client_socket.recv(64)
+                    # we execute the command and save the response
                     response = execute(cmd_buffer.decode())
+                    # if there is a response we send it back to the listener
                     if response:
                         client_socket.send(response.encode())
                     cmd_buffer = b''
+                
                 except Exception as e:
                     print(f'server killed {e}')
                     self.socket.close()
