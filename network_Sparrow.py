@@ -14,7 +14,7 @@ def execute(cmd):
         return
     # here we use the subprocess library which provides an interface for process-creation, with check_output
     # we execute a command on the local operating system and returns the output.
-    output = subprocess.check_output(shlex.split(cmd), stderr=subprocess.STDOUT)
+    output = subprocess.check_output(cmd, stderr=subprocess.STDOUT)
     return output.decode()
 
 class Network_Sparrow:
@@ -79,6 +79,7 @@ class Network_Sparrow:
             # socket.accept()
             # Accept a connection. The socket must be bound to an address and listening for connections. The return value is a pair (conn, address) where conn is a new socket object usable to send and receive data on the connection, and address is the address bound to the socket on the other end of the connection.
             client_socket, _ = self.socket.accept()
+            print("Connection established... ")
             # we pass the connected socket to the handle method
             client_thread = threading.Thread(
                 target = self.handle, args=(client_socket,)
@@ -115,7 +116,7 @@ class Network_Sparrow:
                 try:
                     # we send a prompt to the sender and wait for a command string to come back
                     client_socket.send(b'BHP: #> ')
-                    # we recieve the hole command and we packed it in cmd_buffer
+                    # we recieve the hole command and we packed in cmd_buffer
                     while '\n' not in cmd_buffer.decode():
                         cmd_buffer += client_socket.recv(64)
                     # we execute the command and save the response
@@ -153,6 +154,7 @@ if __name__ == '__main__':
         buffer = ''
     else:
         buffer = sys.stdin.read()
-    nc = Network_Sparrow(args,buffer.encode())
+        print('buffer-->', buffer)
+    nc = Network_Sparrow(args, buffer.encode())
     # we call the run method 
     nc.run() 

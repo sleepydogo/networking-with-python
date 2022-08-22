@@ -6,3 +6,5 @@ Definitions:
     * Network socket: Is a software structure within a network node of a computer network that serves as an endpoint for sending and receiving data across the network. The structure and properties of a socket are defined by an application programming interface (API) for the networking architecture.Sockets are created only during the lifetime of a process of an application running in the node.     
     
     * Buffer: In computer science, a data buffer (or just buffer) is a region of a memory used to temporarily store data while it is being moved from one place to another. Typically, the data is stored in a buffer as it is retrieved from an input device (such as a microphone) or just before it is sent to an output device (such as speakers). However, a buffer may be used when moving data between processes within a computer. z
+
+    * Proxy: Is a server application that acts as an intermediary between a client requesting a resource from a server 

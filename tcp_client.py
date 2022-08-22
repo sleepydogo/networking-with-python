@@ -13,7 +13,7 @@ client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client.connect((target_host, target_port))
 
 # send some data
-client.send(b"Hi hello, we are connecting via tcp protocol across the net xd")
+client.send(b"Hi can you read me??")
 
 # recieve some data
 response = client.recv(4096)
